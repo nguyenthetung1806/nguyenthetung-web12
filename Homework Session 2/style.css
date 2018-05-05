@@ -2,16 +2,14 @@
   color: #402E2A;
   background-color: #D5B0AC;
   font-weight: bold;
-  text-align-last: center;
+  text-align: center;
 }
 
 .menu span {
   display: inline-table;
   background-color: #D5B0AC;
   width: 100px;
-  height: 20px;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  line-height:30px;
 }
 
 .menu span:hover {
