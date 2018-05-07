@@ -9,14 +9,18 @@ let app = express();
 
 
 
-app.get('/:webclass', function(req, res, next){
-  var webclass = req.params.webclass;
-  var doTheJob = function(webclass, Post) {
-    request('https://btvn-web12.herokuapp.com/api/' + webclass, function (error, response, body) {
+app.get('/:webclass', function(req, res){
+  if(req.params.webclass.indexOf('.') <= 0){
+    url = 'https://btvn-web12.herokuapp.com/api/' + req.params.webclass;
+    request(url, function (error, response, body) {
+      console.log('url:', url);
+      console.log('error:', error); // Print the error if one occurred
+      console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+      console.log('body:', body);
+
       fs.writeFileSync('test.json', body);
       Post();
     });
-
   }
   var Post = function(){
     let obj;
@@ -25,13 +29,12 @@ app.get('/:webclass', function(req, res, next){
       if (err) throw err;
       obj = JSON.parse(data);
       for(i = 0; i < obj.data.length; i++){
-        string += "<li>" + obj.data[i] + "</li>";
+        string += `<li>${obj.data[i]}</li>`
       }
-      html = "<ul>" + string + "</ul>"
+      html = `<ul>${string}</ul>`;
       res.send(html);
     });
   }
-  doTheJob(webclass, Post);
 });
 
 
