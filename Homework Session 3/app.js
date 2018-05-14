@@ -4,14 +4,30 @@ const fs = require('fs');
 const request = require('request');
 let app = express();
 
-
-
-
+app.use(express.static('static'));
 
 
 app.get('/:webclass', function(req, res){
-  if(req.params.webclass.indexOf('.') <= 0){
+  if(req.params.webclass.indexOf('.') == -1){
     url = 'https://btvn-web12.herokuapp.com/api/' + req.params.webclass;
+    getAndWrite(url, function(){
+      let obj;
+      let string = "";
+      let html = "";
+      fs.readFile('test.json', 'utf8', function (err, data) {
+        if (err) throw err;
+        obj = JSON.parse(data);
+        obj.data.forEach((item) => {
+          string +=`<li>${item}</li>`
+        });
+        html = `<ul>${string}</ul>`;
+        res.send(html);
+      });
+    });
+  }
+
+
+  function getAndWrite(url, Post){
     request(url, function (error, response, body) {
       console.log('url:', url);
       console.log('error:', error); // Print the error if one occurred
@@ -22,53 +38,47 @@ app.get('/:webclass', function(req, res){
       Post();
     });
   }
-  var Post = function(){
-    let obj;
-    let string = "";
-    fs.readFile('test.json', 'utf8', function (err, data) {
-      if (err) throw err;
-      obj = JSON.parse(data);
-      for(i = 0; i < obj.data.length; i++){
-        string += `<li>${obj.data[i]}</li>`
-      }
-      html = `<ul>${string}</ul>`;
-      res.send(html);
-    });
-  }
+
+
 });
 
 
+// for(i = 0; i < obj.data.length; i++){
+//   string += `<li>${obj.data[i]}</li>`
+// }
+
+// try, if error, do something
+// try {
+//
+// } catch(error) {}
+
+// obj.data.map(item, index) =>{
+//
+// });
+
+// joint, plit array
+// obj.split(' ');
+// obj.joint(' ');
 
 
-
-
-
-// app.get('/web12', function(req, res){
-//   let obj;
-//   let string = "";
-//   fs.readFile('test.json', 'utf8', function (err, data) {
-//     if (err) throw err;
-//     obj = JSON.parse(data);
-//     for(i = 0; i < obj.data.length; i++){
-//       string += "<li>" + obj.data[i] + "</li>";
-//     }
-//     html = "<ul>" + string + "</ul>"
-//     res.send(html);
-//   });
+// filter element that satisfy some conditions
+// arr.filter((item) => {
+//   return item === 5;
 // });
 
 
 
-app.use(express.static('static'));
 
+// if else command in ES6
+// condition ? true : false;
+
+
+
+
+// app.use(express.static('static')); automatically use index.html as the front page
 app.get('/', function(req, res){
   res.sendFile(path.resolve('./static/index.html'));
 });
-
-
-
-
-
 
 
 

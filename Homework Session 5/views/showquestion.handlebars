@@ -1,0 +1,21 @@
+<div class="container">
+
+
+  <h1>Show Question:   </h1>
+
+  <h5>Question ID: {{question.id}}</h5>
+
+  <h3>Question: {{question.questionContent}}</h3>
+
+  <div class="row">
+
+    <form class="col-xl-2 col-6 p-0" action="/api/vote/{{question.id}}/yes" method="post">
+      <button class="btn btn-success btn-block" type="summit" name="yes">YES</button>
+    </form>
+
+    <form class="col-xl-2 col-6 p-0" action="/api/vote/{{question.id}}/no" method="post">
+      <button class="btn btn-danger btn-block" type="summit" name="yes">NO</button>
+    </form>
+
+  </div>
+</div>

@@ -1,0 +1,20 @@
+
+<p>ID: {{question.id}}</p>
+<p>Question: {{question.questionContent}}</p>
+<p>Total vote: {{voteTotal}}</p>
+<div class="col-7">
+  <div style="height: 25px;" class="progress">
+  {{#eq voteTotal 0}}
+    <div class="progress-bar bg-secondary" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+      This question currently has no vote
+    </div>
+  {{else}}
+    <div class="progress-bar bg-success" role="progressbar" style="width: {{percentYes}}%" aria-valuenow="{{percentYes}}" aria-valuemin="0" aria-valuemax="100">
+      Yes: {{percentYes}}% ({{question.yes}} Vote)
+    </div>
+    <div class="progress-bar bg-danger" role="progressbar" style="width: {{percentNo}}%" aria-valuenow="{{percentNo}}" aria-valuemin="0" aria-valuemax="100">
+      No: {{percentNo}}% ({{question.no}} Vote)
+    </div>
+  {{/eq}}
+  </div>
+</div>
