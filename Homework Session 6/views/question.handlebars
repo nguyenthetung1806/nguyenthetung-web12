@@ -1,6 +1,6 @@
 
 <p>ID: {{question.id}}</p>
-<p>Question: {{question.questionContent}}</p>
+<p>Question: {{question.content}}</p>
 <p>Total vote: {{voteTotal}}</p>
 <div class="col-7">
   <div style="height: 25px;" class="progress">
@@ -10,10 +10,14 @@
     </div>
   {{else}}
     <div class="progress-bar bg-success" role="progressbar" style="width: {{percentYes}}%" aria-valuenow="{{percentYes}}" aria-valuemin="0" aria-valuemax="100">
+    {{#gt percentYes 20}}
       Yes: {{percentYes}}% ({{question.yes}} Vote)
+    {{/gt}}
     </div>
     <div class="progress-bar bg-danger" role="progressbar" style="width: {{percentNo}}%" aria-valuenow="{{percentNo}}" aria-valuemin="0" aria-valuemax="100">
+    {{#gt percentNo 20}}
       No: {{percentNo}}% ({{question.no}} Vote)
+    {{/gt}}
     </div>
   {{/eq}}
   </div>
