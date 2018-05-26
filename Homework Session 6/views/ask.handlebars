@@ -1,6 +1,31 @@
 <h1>Hãy hỏi 1 câu hỏi đúng/sai hoặc có/không</h1>
 
-<form action="/api/question" method="POST">
-  <textarea name="questionContent" rows="10" cols="90"></textarea>
+<form id="questionForm">
+  <textarea  id="question" rows="10" cols="90"></textarea>
+
   <button class="col-xl-2 col-6 btn btn-block" type="summit">Gửi</button>
 </form>
+
+<p class="text-muted" id="counter">còn <span id='remainCharacter'>200</span>/200 ký tự</p>
+
+
+<script type="text/javascript">
+  $('#questionForm').submit(event, function(event){
+    event.preventDefault();
+    console.log('success');
+    $.ajax({
+      url: '/api/question',
+      type: 'POST',
+      data: {
+        content: $('#question').val()
+      },
+      success: function(response){
+        console.log('success', response);
+        if(response.success) window.location.href = `/question/${response.questionId}`;
+      },
+      error: function(response){
+        console.log('Error', response);
+      }
+    });
+  })
+</script>

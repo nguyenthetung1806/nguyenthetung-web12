@@ -4,17 +4,22 @@
     <meta charset="utf-8">
     <title>Quyết đê</title>
   </head>
+  <script
+    src="https://code.jquery.com/jquery-3.3.1.js"
+    integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+    crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  <script type="text/javascript" src="/js/main.js"></script>
 
   <body>
     <div class="container">
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/show">Navbar</a>
+        <a class="navbar-brand" href="/">Navbar</a>
 
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
             <a class="nav-item nav-link" href="/">Show Questions</a>
-            <a class="nav-item nav-link" href="/ask">Ask a Question</a>
+            <a class="nav-item nav-link active" href="/ask">Ask a Question</a>
 
           </div>
         </div>
@@ -27,6 +32,39 @@
 
       <footer>Footer</footer>
     </div>
+
+
+
+
+
+
+
+
+<!--
+    <script type="text/javascript">
+
+      $('#question').on('input', function(){
+        let remainCharacter = 200 - $('#question').val().length;
+        $('#remainCharacter').text(remainCharacter);
+      });
+
+      $( document ).ready(function(){
+        console.log('Doc full loaded');
+        // Sau khi HTML tải hoàn tất thì sẽ thực hiện các lệnh bên trong
+      });
+
+
+      $('.nav-link').click(function(){
+        console.log('đeádasd');
+        $('.nav-link').removeClass('active');
+        $(this).addClass('active');
+      });
+
+
+    </script> -->
+
+
+
 
 
 

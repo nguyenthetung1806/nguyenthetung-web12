@@ -12,12 +12,13 @@ Router.use(bodyParser.urlencoded({extended : false}));
 
 Router.post('/question', function(req, res){
   let newQuestion = {
-    content: req.body.questionContent,
+    content: req.body.content,
   }
   QuestionModel.create(newQuestion, function(err, questionCreated){
-    if(err) console.log(err);
-    else res.redirect(`/question/${questionCreated._id}`);
+    if(err) res.status(200).send( {success: 0, err: err} );
+    res.send({success: 1, questionId: questionCreated._id});
   });
+  QuestionModel.create(req.body)
 });
 
 
@@ -32,6 +33,14 @@ Router.post('/vote/:questionId/:userVote', function(req, res){
   });
 });
 
+
+Router.get('/changeQuestion', function(req, res){
+  QuestionModel.find({ }, function(err, questions) {
+    let randId = Math.floor(Math.random()*questions.length);
+    let question =  questions[randId];
+    res.send({success: 1, question: question});
+  });
+});
 
 
 module.exports = Router;

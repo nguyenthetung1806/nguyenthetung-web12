@@ -3,17 +3,17 @@
   {{#if question}}
     <h1>Show Question:   </h1>
 
-    <h5>Question ID: {{question.id}}</h5>
+    <h5>Question ID: <span id="questionId">{{question.id}}</span> </h5>
 
-    <h3>Question: {{question.content}}</h3>
+    <h3>Question: <span id="questionContent">{{question.content}}</span> </h3>
 
     <div class="row">
 
-      <form class="col-xl-2 col-6 p-0" action="/api/vote/{{question.id}}/yes" method="post">
+      <form id="yes" class="col-xl-2 col-6 p-0 m-3" action="/api/vote/{{question.id}}/yes" method="post">
         <button class="btn btn-success btn-block" type="summit" name="yes">YES</button>
       </form>
 
-      <form class="col-xl-2 col-6 p-0" action="/api/vote/{{question.id}}/no" method="post">
+      <form id="no" class="col-xl-2 col-6 p-0 m-3" action="/api/vote/{{question.id}}/no" method="post">
         <button class="btn btn-danger btn-block" type="summit" name="yes">NO</button>
       </form>
 
@@ -24,4 +24,48 @@
 
   {{/if}}
 
+<div class="row mt-4">
+  <form class="ml-3" id='result' action="/question/{{question.id}}" method="get">
+    <button   class="btn btn-sm" type="submit">
+      Xem kết quả
+    </button>
+  </form>
+
+
+
+  <button class="btn btn-sm ml-3" id="changeQuestion" name="button">
+    Câu hỏi khác
+  </button>
 </div>
+
+
+
+
+</div>
+
+
+
+
+
+
+<script type="text/javascript">
+
+
+  $('#changeQuestion').click(event, function(event){
+    event.preventDefault();
+    console.log('success');
+    $.ajax({
+      url: '/api/changeQuestion',
+      success: function(response){
+        $('#questionContent').text(response.question.content);
+        $('#questionId').text(response.question._id);
+        $("#yes").attr("action", `/api/vote/${response.question._id}/yes`);
+        $("#no").attr("action", `/api/vote/${response.question._id}/no`);
+        $("#result").attr("action", `/question/${response.question._id}`);
+      },
+      error: function(response){
+        console.log('Error', response);
+      }
+    });
+  })
+</script>
