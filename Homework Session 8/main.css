@@ -1,0 +1,32 @@
+img {
+  height: 150px;
+  margin-right: 15px;
+}
+
+.col-md-12.text-center{
+  margin: 10px;
+
+  /* display: flex;
+  justify-content: center;
+  align-self: center; */
+}
+h1{
+  vertical-align: middle;
+  display: inline-block;
+}
+
+.videoimage{
+  float: left;
+}
+a{
+  display: inline-block;
+  height: 200px;
+}
+#loading{
+  vertical-align: middle;
+  display: none;
+}
+
+#loading_img{
+  height: 100px;
+}
