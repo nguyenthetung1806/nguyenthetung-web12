@@ -20,7 +20,6 @@ h1{
 }
 a{
   display: inline-block;
-  height: 200px;
 }
 #loading{
   vertical-align: middle;
@@ -29,4 +28,8 @@ a{
 
 #loading_img{
   height: 100px;
+}
+
+@media only screen and (max-width: 600px){
+
 }
