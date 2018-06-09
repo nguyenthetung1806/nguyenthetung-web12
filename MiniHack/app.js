@@ -1,8 +1,8 @@
 const express = require('express');
-const expressHandlebars = require('express-handlebars');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const handlebars =  require('express-handlebars');
+const handlebarsHelpers = require('handlebars-helpers')({ handlebars: express-handlebars });
 const mongoose = require('mongoose');
 const GameModel = require('./models/game.model');
 
@@ -18,6 +18,9 @@ app.use(bodyParser.urlencoded({extended : false}));
 app.engine('handlebars', handlebars({ defaultLayout: 'main'}));
 // Set the 'view engine' of the app as the newly created "handlebars"
 app.set('view engine', 'handlebars');
+
+
+
 
 
 mongoose.connect('mongodb://localhost/miniHack', (err) => {
@@ -47,21 +50,69 @@ app.post('/api/createQuestion', function(req, res){
 });
 
 
+app.get('/api/add/:id/:playerid/:round/:value', function(req, res){
+  GameModel.findById(req.params.id, function (err, game) {
+    console.log('get');
+    game.Player.forEach(function(data){
+      if(data._id == req.params.playerid){
+        data.roundScore.splice((req.params.round - 1),1 , req.params.value);
+        console.log(data);
+      }
+      game.save(function (err, updatedGame) {
+
+      });
+    });
+  });
+});
+
+
+app.get('/api/addround/:id/all/:round', function(req, res){
+  GameModel.findById(req.params.id, function (err, game) {
+    game.noRound += 1;
+    game.Player.forEach(function(data){
+      data.roundScore.push("");
+      console.log(data);
+      game.save(function (err, updatedGame) {
+      });
+    });
+  });
+});
+
+
+
+
 app.get('/', function(req, res) {
   res.render('CreateScreen')}
 );
 
 
-  app.get('/PlayerScreen/:id', function(req, res) {
+app.get('/PlayerScreen/:id', function(req, res) {
+  console.log(req.params.id);
+  if(req.params.id.indexOf('.') == -1){
+
     GameModel.findById(req.params.id, function (err, game) {
-      if (err) return handleError(err);
-      res.render('PlayerScreen', {game: game});
+      console.log(game);
+      console.log('game success');
+      let table = [];
+      for (let i = 0; i < (game.noRound) ; i++) {
+        let row = [];
+        game.Player.forEach(function(data){
+          row.push(data.roundScore[i])
+        });
+        table.push(row);
+      }
+      console.log(table)
+      res.render('PlayerScreen', {game: game, table: table});
+      console.log('ok');
     });
-  });
+  }
+});
+
+
 
 
 
 app.listen(1811, function(err){
   if(err) console.log(err);
   else console.log('Server is up !!');
-})
+});

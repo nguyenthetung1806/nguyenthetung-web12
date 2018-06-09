@@ -7,116 +7,194 @@
     border-color: #BF1363;
   }
 
+  table{
+    table-layout: fixed;
+
+    word-wrap: break-word;
+  }
+  .pink {
+    background-color:  #BF1363;
+    color: white;
+  }
+  .table{
+    border-bottom: 2px solid;
+    border-color:  #BF1363;
+  }
+
+  .scr{
+    border-bottom: 2px solid;
+    border-color:  gray;
+  }
+
 </style>
 
 
 <div class="container">
 
-  <h1 class="mt-5">ScoreKeeper</h1>
+  <h1 class="mt-5 scr">ScoreKeeper</h1>
   <br>
   <br>
 
   <table class="table table-striped">
     <thead>
-      <tr>
+      <tr id="column">
         <th scope="col"></th>
         {{#each game.Player}}
-          <th scope="col">{{this.playerName}}</th>
+          <th id="{{this._id}}" scope="{{@index}}" class="playerid">{{this.playerName}}</th>
         {{/each}}
       </tr>
-      <tr>
-        <th id="sumall" scope="col">Sum of Score</th>
-        <th id="sum_1" scope="col"></th>
-        <th id="sum_2" scope="col"></th>
-        <th id="sum_3" scope="col"></th>
-        <th id="sum_4" scope="col"></th>
+      <tr class="pink">
+        <th id="sumall"  scope="col">Sum of Score</th>
+        <th id="sum_0" class="sumrow" scope="col"></th>
+        <th id="sum_1" class="sumrow" scope="col"></th>
+        <th id="sum_2" class="sumrow" scope="col"></th>
+        <th id="sum_3" class="sumrow" scope="col"></th>
       </tr>
     </thead>
     <tbody id="Round">
-
+      {{#each table}}
+        <tr>
+          <th id="{{add 1 @index}}" class="column_head" cope="row">Round {{add 1 @index}}</th>
+          {{#each this}}
+            <td>
+              <input scope="{{@index}}" value="{{this}}" class="form-control column_{{@index}}" >
+            </td>
+          {{/each}}
+        </tr>
+      {{/each}}
     </tbody>
   </table>
-<div class="text-center">
+<div class="text-center end">
 <button style="background-color:  #BF1363; border-color: #BF1363;" type="submit" class="btn btn-primary btn-lg" id="addRoundbtn">Add round</button>
 </div>
 </div>
 
+
+
 <script type="text/javascript">
+
+$( document ).ready(function() {
+  function getStart(column, sumx, sumrowStart){
+    var sum = 0;
+    $(column).each(function(){
+      parseInt($(this).val())?  sum += parseInt($(this).val()): sum += 0;
+    });
+    $(sumx).text(sum);
+    sumrowStart();
+  }
+  getStart(".column_0","#sum_0", sumrowStart);
+  getStart(".column_1","#sum_1", sumrowStart);
+  getStart(".column_2","#sum_2", sumrowStart);
+  getStart(".column_3","#sum_3", sumrowStart);
+
+  function sumrowStart(){
+    var sumrow = 0;
+    $(".sumrow").each(function(){
+      if($(this).text() === ""){
+        sumrow+= 0;
+      }  else{
+        sumrow += parseInt($(this).text());
+      }
+    });
+    $("#sumall").text(`Sum of Score (${sumrow})`);
+  }
+
+});
+
+
+
+
+
+var count = {{game.noRound}} + 1;
   $(document).ready(function(){
-    var count = 1;
+
     $("#addRoundbtn").click(function(){
     $('#Round').append(`
       <tr>
-        <th class="column_0" cope="row">Round ${count}</th>
-        <td>
-          <input class="form-control column_1" >
-        </td>
-        <td>
-          <input class="form-control column_2" >
-        </td>
-        <td>
-          <input class="form-control column_3" >
-        </td>
-        <td>
-          <input class="form-control column_4" >
-        </td>
+        <th id="${count}" class="column_head" cope="row">Round ${count}</th>
+        {{#each game.Player}}
+          <td>
+            <input scope="{{@index}}" class="form-control column_{{@index}}" >
+          </td>
+        {{/each}}
+
       </tr>
 
     `);
-    count += 1;
-
-
-
-
-  });
-
-
-  $(document).on('keyup', '.form-control', function(){
     $.ajax({
-      url:`/api/add/${question.id}/row/col`,
+      url:`/api/addround/${gameid}/all/${count-1}`,
       type: 'get',
       success: function(response){
-        if(response.items.length != 0){
-          console.log('success');
       },
       error: function(response){
         console.log('Error', response);
       }
     });
+    count += 1;
+
 
 
   });
 
+  let gameid = `{{game._id}}`
 
 
-$(document).on('keyup', '.column_1', function(){
-  var sum = 0;
-  $(".column_1").each(function(){
-      sum += parseInt($(this).val());
+  $(document).on('keyup', 'td', function(){
+    let round = $(this).siblings('th').attr('id');
+    let value = $(this).children().val();
+    let scopethis =       $(this).children().attr('scope');
+    $('.playerid').each(function(){
+      if($(this).attr('scope') == scopethis){
+        playerid = $(this).attr('id');
+        console.log(`/api/add/${gameid}/${playerid}/${round}/${value}`);
+        $.ajax({
+          url:`/api/add/${gameid}/${playerid}/${round}/${value}`,
+          type: 'get',
+          success: function(response){
+
+          },
+          error: function(response){
+            console.log('Error', response);
+          }
+        });
+      }
+    });
+
+
+
+
   });
-  $("#sum_1").text(sum);
-});
-$(document).on('keyup', '.column_2', function(){
-  var sum = 0;
-  $(".column_2").each(function(){
-      sum += parseInt($(this).val());
+
+  function sumrow(){
+    $(document).on('keyup', '.form-control', function(){
+      var sumrow = 0;
+      $(".sumrow").each(function(){
+        if($(this).text() === ""){
+          sumrow+= 0;
+        }  else{
+          sumrow += parseInt($(this).text());
+        }
+      });
+      $("#sumall").text(`Sum of Score (${sumrow})`);
+    });
+  }
+
+function sumcol(column, sumx , sumrow){
+  $(document).on('keyup', column, function(){
+    var sum = 0;
+    $(column).each(function(){
+      parseInt($(this).val())?  sum += parseInt($(this).val()): sum += 0;
+    });
+    $(sumx).text(sum);
   });
-  $("#sum_2").text(sum);
-});
-$(document).on('keyup', '.column_3', function(){
-  var sum = 0;
-  $(".column_3").each(function(){
-      sum += parseInt($(this).val());
-  });
-  $("#sum_3").text(sum);
-});
-$(document).on('keyup', '.column_4', function(){
-  var sum = 0;
-  $(".column_4").each(function(){
-      sum += parseInt($(this).val());
-  });
-  $("#sum_4").text(sum);
-});
+  sumrow();
+}
+
+sumcol(".column_0","#sum_0", sumrow);
+sumcol(".column_1","#sum_1", sumrow);
+sumcol(".column_2","#sum_2", sumrow);
+sumcol(".column_3","#sum_3", sumrow);
+
 
 
 

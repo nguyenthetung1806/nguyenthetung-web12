@@ -4,10 +4,12 @@ const Schema = mongoose.Schema;
 var childSchema = new Schema({
    playerName: { type: String},
    roundScore:  { type: Array},
+
 });
 
 const GameSchema = new mongoose.Schema({
   Player: [childSchema],
+  noRound: { type: Number,  default: 0},
 });
 
 
