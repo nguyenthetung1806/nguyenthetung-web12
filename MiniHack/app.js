@@ -58,9 +58,9 @@ app.get('/api/add/:id/:playerid/:round/:value', function(req, res){
         data.roundScore.splice((req.params.round - 1),1 , req.params.value);
         console.log(data);
       }
-      game.save(function (err, updatedGame) {
-
-      });
+    });
+    game.save(function (err, updatedGame) {
+      console.log('save');
     });
   });
 });
