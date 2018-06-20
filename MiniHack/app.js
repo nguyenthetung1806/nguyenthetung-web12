@@ -51,18 +51,22 @@ app.post('/api/createQuestion', function(req, res){
 
 
 app.get('/api/add/:id/:playerid/:round/:value', function(req, res){
-  GameModel.findById(req.params.id, function (err, game) {
-    console.log('get');
-    game.Player.forEach(function(data){
-      if(data._id == req.params.playerid){
-        data.roundScore.splice((req.params.round - 1),1 , req.params.value);
-        console.log(data);
-      }
+  if(req.params.value.indexOf('.') == -1){
+    GameModel.findById(req.params.id, function (err, game) {
+      game.Player.forEach(function(data){
+        console.log(data._id);
+        console.log(req.params.playerid);
+        if(data._id == req.params.playerid){
+          console.log(req.params.round - 1);
+          data.roundScore.splice((parseInt(req.params.round) - 1),1 , req.params.value);
+        }
+      });
+      game.save(function (err, updatedGame) {
+        console.log('save');
+      });
     });
-    game.save(function (err, updatedGame) {
-      console.log('save');
-    });
-  });
+  }
+
 });
 
 
