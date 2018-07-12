@@ -1,0 +1,27 @@
+  .body {
+    background-color: #FBFEF9;
+    text-color: #333333;
+  }
+  .form-control{
+    border-color: #BF1363;
+  }
+  .header{
+    border-bottom: 2px solid;
+    border-color:  gray;
+    margin-top: 100px;
+    margin-bottom: 50px;
+  }
+ .table{
+    table-layout: fixed;
+    border-bottom: 2px solid;
+    border-color:  #BF1363;
+    word-wrap: break-word;
+  }
+  .btn{
+    background-color:  #BF1363;
+    color: white;
+  }
+  .warning{
+    color: red;
+    font-weight: lighter;
+  }

@@ -1,0 +1,15 @@
+body {
+  background: #e6ecf0;
+  color: #14171a;
+  font-size: 14px;
+  line-height: 20px;
+  overflow-y: scroll;
+}
+a:hover {
+  text-decoration: none;
+  color: #1DA1F2;
+  background-color: transparent;
+}
+i {
+  font-size: 17px;
+}

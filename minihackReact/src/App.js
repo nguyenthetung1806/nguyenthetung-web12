@@ -2,35 +2,36 @@ import React, { Component } from 'react';
 import '../node_modules/bootstrap/dist/css/bootstrap.css'
 import './App.css';
 import Header from './components/Header';
-import PagePlay from './components/PagePlay';
-import PageCreate from './components/PageCreate';
+import PlayScreen from './components/PlayScreen/PlayScreen';
+import CreateScreen from './components/CreateScreen/CreateScreen';
 
 class App extends Component {
   state = {
-    pageOne: true,
+    Page: 'CreateScreen',
     playerNames: ['', '', '', '']
   }
 
   handlePage = () => {
     this.setState({
-      pageOne: false
-    })
+      Page: "PLayScreen"
+    });
   }
 
-  handleInput = (id, player) => {
-    var newPlayernames = [...this.state.playerNames]
-    newPlayernames[id] = player;
+  handleInput = (id, playerName) => {
+    var playerNames = [...this.state.playerNames];
+    playerNames[id] = playerName;
     this.setState({
-      playerNames: newPlayernames
-    })
+      playerNames : playerNames
+    });
   }
 
   render() {
     return (
       <div className="App container">
         <Header />
-        {this.state.pageOne ? <PageCreate handlePage={this.handlePage} handleInput={this.handleInput}/>
-                            : <PagePlay playerNames={this.state.playerNames} />}
+        {this.state.Page === "CreateScreen" ? 
+          <CreateScreen handlePage={this.handlePage} handleInput={this.handleInput}/>
+          : <PlayScreen playerNames={this.state.playerNames} />}
       </div>
     );
   }

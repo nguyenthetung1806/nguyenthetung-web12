@@ -6,7 +6,7 @@ const CommentSchema = new Schema ({
   content: { type: String, default: "" },
   createdBy: { type: String, default: null }
 }, {
-  timmestamps: { createAt: "createAt" }
+  timmestamps: { createdAt: 'created_at' }
 });
 
 // parent doc
@@ -20,7 +20,7 @@ const ImageModel = new Schema ({
   Active: { type: Boolean, default: true },
   comment: { type: [CommentSchema], default: [] },
 }, {
-  timmestamps: { createAt: "createAt" }
+  timmestamps: { createdAt: 'created_at' }
 });
 
 module.exports = mongoose.model("Images", ImageModel);
